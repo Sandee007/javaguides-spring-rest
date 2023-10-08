@@ -1,11 +1,10 @@
 package com.example.javaguidesblog.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 public class CommentDto {
     private Long id;
     private String name;

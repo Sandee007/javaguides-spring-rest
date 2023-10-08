@@ -1,14 +1,17 @@
 package com.example.javaguidesblog.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
+import lombok.*;
 
-@Data
+import java.util.Set;
+
 //@Value // * https://projectlombok.org/features/Value
+@NoArgsConstructor
+@Getter
+@Setter
 public class PostDto {
     private Long id;
     private String title;
     private String description;
     private String content;
+    private Set<CommentDto> comments;
 }
