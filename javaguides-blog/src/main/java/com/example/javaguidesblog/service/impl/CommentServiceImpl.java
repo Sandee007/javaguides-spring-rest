@@ -8,6 +8,7 @@ import com.example.javaguidesblog.exception.ResourceNotFoundException;
 import com.example.javaguidesblog.repository.CommentRepository;
 import com.example.javaguidesblog.repository.PostRepository;
 import com.example.javaguidesblog.service.CommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,27 +19,34 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentRepository commentRepository;
     private PostRepository postRepository;
+    private ModelMapper modelMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentServiceImpl(
+            CommentRepository commentRepository, PostRepository postRepository,
+            ModelMapper modelMapper
+    ) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
     private Comment dtoToEntity(CommentDto commentDto) {
-        return Comment.builder()
-                      .name(commentDto.getName())
-                      .email(commentDto.getEmail())
-                      .body(commentDto.getBody())
-                      .build();
+        //        return Comment.builder()
+        //                      .name(commentDto.getName())
+        //                      .email(commentDto.getEmail())
+        //                      .body(commentDto.getBody())
+        //                      .build();
+        return modelMapper.map(commentDto, Comment.class);
     }
 
     private CommentDto entityToDto(Comment comment) {
-        return CommentDto.builder()
-                         .id(comment.getId())
-                         .name(comment.getName())
-                         .email(comment.getEmail())
-                         .body(comment.getBody())
-                         .build();
+        //        return CommentDto.builder()
+        //                         .id(comment.getId())
+        //                         .name(comment.getName())
+        //                         .email(comment.getEmail())
+        //                         .body(comment.getBody())
+        //                         .build();
+        return modelMapper.map(comment, CommentDto.class);
     }
 
     private Post findPostById(Long postId) {

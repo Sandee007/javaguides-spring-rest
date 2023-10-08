@@ -6,6 +6,7 @@ import com.example.javaguidesblog.exception.ResourceNotFoundException;
 import com.example.javaguidesblog.payload.PostResponse;
 import com.example.javaguidesblog.repository.PostRepository;
 import com.example.javaguidesblog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,26 +19,33 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
     private PostDto entityToDto(Post post) {
-        return PostDto.builder()
-                      .id(post.getId())
-                      .title(post.getTitle())
-                      .description(post.getDescription())
-                      .content(post.getContent())
-                      .build();
+        //        return PostDto.builder()
+        //                      .id(post.getId())
+        //                      .title(post.getTitle())
+        //                      .description(post.getDescription())
+        //                      .content(post.getContent())
+        //                      .build();
+
+        //        * using model mapper
+        return modelMapper.map(post, PostDto.class);
     }
 
     private Post dtoToEntity(PostDto postDto) {
-        return Post.builder()
-                   .title(postDto.getTitle())
-                   .description(postDto.getDescription())
-                   .content(postDto.getContent())
-                   .build();
+        //        return Post.builder()
+        //                   .title(postDto.getTitle())
+        //                   .description(postDto.getDescription())
+        //                   .content(postDto.getContent())
+        //                   .build();
+
+        return modelMapper.map(postDto, Post.class);
     }
 
     private Post findById(Long id) throws ResourceNotFoundException {
