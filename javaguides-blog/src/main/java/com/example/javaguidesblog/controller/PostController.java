@@ -4,10 +4,14 @@ import com.example.javaguidesblog.dto.PostDto;
 import com.example.javaguidesblog.payload.PostResponse;
 import com.example.javaguidesblog.service.PostService;
 import com.example.javaguidesblog.util.ApiConfig;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+// * https://spring.io/guides/gs/rest-service-cors/
+// * https://www.baeldung.com/spring-cors
+@CrossOrigin(origins = "http://127.0.0.1:5173/")
 @RestController
 @RequestMapping(ApiConfig.BASE + ApiConfig.Posts.INDEX)
 public class PostController {
@@ -19,7 +23,7 @@ public class PostController {
     }
 
     @PostMapping()
-    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> create(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.create(postDto), HttpStatus.CREATED);
     }
 
@@ -51,7 +55,7 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PostDto> update(@PathVariable Long id, @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> update(@PathVariable Long id, @Valid @RequestBody PostDto postDto) {
         PostDto dto = postService.updatePost(postDto, id);
         return ResponseEntity.ok(dto);
     }
