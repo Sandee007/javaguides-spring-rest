@@ -7,6 +7,7 @@ import com.example.javaguidesblog.util.ApiConfig;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 // * https://spring.io/guides/gs/rest-service-cors/
@@ -22,11 +23,13 @@ public class PostController {
         this.postService = postService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // ! must need to have @EnableMethodSecurity in SecurityConfig
     @PostMapping()
     public ResponseEntity<PostDto> create(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.create(postDto), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public PostResponse index(
             @RequestParam(
@@ -54,12 +57,14 @@ public class PostController {
         return ResponseEntity.ok(postService.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<PostDto> update(@PathVariable Long id, @Valid @RequestBody PostDto postDto) {
         PostDto dto = postService.updatePost(postDto, id);
         return ResponseEntity.ok(dto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         postService.deleteById(id);

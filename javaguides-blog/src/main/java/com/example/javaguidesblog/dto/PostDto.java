@@ -22,7 +22,7 @@ public class PostDto {
     private String description;
 
     @NotEmpty
-    @Size(min = 10, message = "Description should contain 10 characters at least")
+    @Size(min = 10, message = "Content should contain 10 characters at least")
     private String content;
 
     private Set<CommentDto> comments;
