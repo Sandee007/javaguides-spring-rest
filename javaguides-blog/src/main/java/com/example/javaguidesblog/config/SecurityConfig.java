@@ -21,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     //    * custom user details services
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService; // ! CustomUserDetailsService is used automatically , cuz it's an @Service
 
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -45,28 +45,30 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     //  auth.anyRequest().authenticated()
-                    auth.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                        .anyRequest().authenticated();
+                    auth
+                            .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                            .requestMatchers("/api/auth/**").permitAll()
+                            .anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user = User.builder()
-//                               .username("user")
-//                               .password(passwordEncoder().encode("user"))
-//                               .roles("USER")
-//                               .build();
-//
-//        UserDetails admin = User.builder()
-//                                .username("admin")
-//                                .password(passwordEncoder().encode("admin"))
-//                                .roles("ADMIN")
-//                                .build();
-//
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
+    //    @Bean
+    //    public UserDetailsService userDetailsService() {
+    //        UserDetails user = User.builder()
+    //                               .username("user")
+    //                               .password(passwordEncoder().encode("user"))
+    //                               .roles("USER")
+    //                               .build();
+    //
+    //        UserDetails admin = User.builder()
+    //                                .username("admin")
+    //                                .password(passwordEncoder().encode("admin"))
+    //                                .roles("ADMIN")
+    //                                .build();
+    //
+    //        return new InMemoryUserDetailsManager(user, admin);
+    //    }
 }

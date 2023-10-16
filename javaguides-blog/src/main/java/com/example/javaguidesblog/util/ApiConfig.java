@@ -17,4 +17,10 @@ public class ApiConfig {
     public static final class Comments{
         public  static final String INDEX = Posts.INDEX + "/{postId}/comments";
     }
+
+    public static final class Auth{
+        public  static  final String BASE = "auth";
+        public  static  final String LOGIN = "login";
+        public  static  final String REGISTER = "register";
+    }
 }
